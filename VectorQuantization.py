@@ -1,10 +1,10 @@
 import numpy as np
 from PIL import Image
 
-def lbg(vectors, numCodewords, epsilon = 1e-5):
+def lbg(vectors, numCodewords, epsilon = 0.01):
     codewords = [np.mean(vectors, axis=0)]
 
-    # Split codewords until reach need number
+    # Split codewords until reach needed number of codewords
     while len(codewords) < numCodewords:
         newCodewords = []
         for cw in codewords:
@@ -107,9 +107,9 @@ def compress():
 
     indices = np.array(indices)
     np.save("codebook.npy", np.array(codebook))
-    np.save("compressed.npy", indices)
+    np.save("compressed_image.npy", indices)
     print("Codebook saved to codebook.npy")
-    print("Compressed file saved to compressed.npy")
+    print("Compressed file saved to compressed_image.npy")
 
     # Calculate compression ratio
     originalSize = paddedImg.size  # pixels (bytes)
@@ -117,7 +117,12 @@ def compress():
     compressedSize = len(indices) * bitsPerIndex / 8
 
     compressionRatio = originalSize / compressedSize
+    print("Original size = ", originalSize)
+    print("Compressed size = ", compressedSize)
     print("Compression Ratio = ", compressionRatio)
+
+    with open("meta_data.txt", "w") as f:
+        f.write(f"{imgH} {imgW} {blockHeight} {blockWidth} {padH} {padW}\n")
 
 def decompress():
     return None
