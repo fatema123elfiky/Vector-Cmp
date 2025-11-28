@@ -1,4 +1,4 @@
-# Vector Quantization Technique
+# Vector Quantization Compression Technique
 Vector Quantization (VQ) is a lossy image compression technique that reduces the size of an image by replacing groups of pixels (called blocks or vectors) with representative patterns known as codewords.
 
 Instead of storing every pixel in the image, VQ stores:
