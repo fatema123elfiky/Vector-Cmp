@@ -19,7 +19,7 @@ def lbg(vectors, numCodewords, epsilon = 0.01):
         for i in range(len(codewords)):
             clusters[i] = []
 
-        # Assign each vector to the best cluster
+        # Assign each vector to    best cluster
         for vector in vectors:
             mnDistance = float('inf')
             bestCluster = 0
@@ -106,8 +106,8 @@ def compress():
         indices.append(bestIndex)
 
     indices = np.array(indices)
-    np.save("codebook.npy", np.array(codebook))
-    np.save("compressed_image.npy", indices)
+    np.save("data/codebook.npy", np.array(codebook))
+    np.save("data/compressed_image.npy", indices)
     print("Codebook saved to codebook.npy")
     print("Compressed file saved to compressed_image.npy")
 
@@ -121,8 +121,34 @@ def compress():
     print("Compressed size = ", compressedSize)
     print("Compression Ratio = ", compressionRatio)
 
-    with open("meta_data.txt", "w") as f:
+    with open("data/meta_data.txt", "w") as f:
         f.write(f"{imgH} {imgW} {blockHeight} {blockWidth} {padH} {padW}\n")
 
 def decompress():
+
+    codebookPath = input("Enter the codebook path: ")
+    codebook = np.load(codebookPath)
+    compressedImagePath = input("Enter the compressed image path: ")
+    compressedImage = np.load(compressedImagePath)
+
+    with open("data/meta_data.txt", "r") as f:
+        imgH, imgW, blockHeight, blockWidth, padH , padW = f.readline().split();
+
+    imgH =int(imgH)
+    imgW = int(imgW)
+    blockHeight = int(blockHeight)
+    blockWidth = int(blockWidth)
+
+
+    reImage = np.zeros((imgH, imgW), dtype=np.uint8)
+    i_block = 0
+    for i in range(0, imgH, blockHeight):
+        for j in range(0, imgW, blockWidth):
+            block = codebook[compressedImage[i_block]].reshape((blockHeight, blockWidth))
+            reImage[i:i + blockHeight, j:j + blockWidth] = block
+            i_block += 1
+
+    img=Image.fromarray(np.uint8(reImage))
+    img.save("images/decompressed_image.png")
+
     return None
