@@ -63,15 +63,15 @@ def lbg(vectors, numCodewords, epsilon = 0.01):
 
     return codewords
 
-def compress():
+def compress(image,bh ,bw,cs):
     # Input data
-    imgPath = input("Enter the image path:")
-    img = Image.open(imgPath).convert("L")
+    #imgPath = input("Enter the image path:")
+    img = Image.open(image).convert("L")
     imgArray = np.array(img)
-    print("Enter block dimensions")
-    blockHeight = int(input("Block height:"))
-    blockWidth = int(input("Block width:"))
-    numCodewords = int(input("Enter number of blocks in the codebook:"))
+    #print("Enter block dimensions")
+    blockHeight = int(bh)
+    blockWidth = int(bw)
+    numCodewords = int(cs)
 
     # Pad image with zeros if needed
     imgH, imgW = imgArray.shape
@@ -106,8 +106,8 @@ def compress():
         indices.append(bestIndex)
 
     indices = np.array(indices)
-    np.save("data/codebook.npy", np.array(codebook))
-    np.save("data/compressed_image.npy", indices)
+    np.save("C:\\Users\Fatma\PycharmProjects\DataCompression\VecCmp\data\codebook.npy", np.array(codebook))
+    np.save("C:\\Users\Fatma\PycharmProjects\DataCompression\VecCmp\data\compressed_image.npy", indices)
     print("Codebook saved to codebook.npy")
     print("Compressed file saved to compressed_image.npy")
 
@@ -121,17 +121,20 @@ def compress():
     print("Compressed size = ", compressedSize)
     print("Compression Ratio = ", compressionRatio)
 
-    with open("data/meta_data.txt", "w") as f:
+    with open("C:\\Users\Fatma\PycharmProjects\DataCompression\VecCmp\data\meta_data.txt", "w") as f:
         f.write(f"{imgH} {imgW} {blockHeight} {blockWidth} {padH} {padW}\n")
 
+    return [originalSize, compressedSize, compressionRatio]
 def decompress():
 
     codebookPath = input("Enter the codebook path: ")
     codebook = np.load(codebookPath)
     compressedImagePath = input("Enter the compressed image path: ")
     compressedImage = np.load(compressedImagePath)
+    metadataPath = input("Enter the compressed image path: ")
 
-    with open("data/meta_data.txt", "r") as f:
+
+    with open(metadataPath, "r") as f:
         imgH, imgW, blockHeight, blockWidth, padH , padW = f.readline().split();
 
     imgH =int(imgH)

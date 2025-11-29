@@ -21,13 +21,14 @@ compressbtn = st.button("Compress")
 decompressbtn = st.button("Decompress")
 
 if compressbtn and file:
-    tmp = "temp.png"
-    img.save(tmp)
-    ratio = comp.compress(tmp, bh, bw, cs)
-    st.success(f"Compression Finished Ratio: {round(ratio,2)}")
-    comp.decompress()
-    if os.path.exists("decompressed.png"):
-        st.image(Image.open("decompressed.png"), caption="Compressed", width=200)
+
+    ratio = comp.compress(file, bh, bw, cs)
+    st.success(
+        f"Compressed Successfully !! \n"
+        f"Original size : {ratio[0]}  \n"
+        f"Compressed size : {ratio[1]}  \n"
+        f"Compression Ratio : {ratio[2]}"
+    )
 
 if decompressbtn:
     if os.path.exists("decompressed.png"):
