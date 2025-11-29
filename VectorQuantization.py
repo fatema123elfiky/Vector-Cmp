@@ -125,17 +125,18 @@ def compress(image,bh ,bw,cs):
         f.write(f"{imgH} {imgW} {blockHeight} {blockWidth} {padH} {padW}\n")
 
     return [originalSize, compressedSize, compressionRatio]
-def decompress():
+def decompress(codebookPath ,compressedImagePath , metadataPath):
 
-    codebookPath = input("Enter the codebook path: ")
+    #codebookPath = input("Enter the codebook path: ")
     codebook = np.load(codebookPath)
-    compressedImagePath = input("Enter the compressed image path: ")
+    #compressedImagePath = input("Enter the compressed image path: ")
     compressedImage = np.load(compressedImagePath)
-    metadataPath = input("Enter the compressed image path: ")
+    #metadataPath = input("Enter the meta data path: ")
 
 
-    with open(metadataPath, "r") as f:
-        imgH, imgW, blockHeight, blockWidth, padH , padW = f.readline().split();
+    #with open(metadataPath, "r") as f:
+    content = metadataPath.read().decode()
+    imgH, imgW, blockHeight, blockWidth, padH , padW = content.split();
 
     imgH =int(imgH)
     imgW = int(imgW)
@@ -152,6 +153,6 @@ def decompress():
             i_block += 1
 
     img=Image.fromarray(np.uint8(reImage))
-    img.save("images/decompressed_image.png")
+    img.save("C:\\Users\Fatma\PycharmProjects\DataCompression\VecCmp\images\decompressed_image.png")
 
     return None
