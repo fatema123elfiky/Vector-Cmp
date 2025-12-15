@@ -1,4 +1,4 @@
-# Vector Quantization Image Compressor
+# Vector Quantization Image Compression Technique
 A simple Streamlit-based application that compresses and decompresses grayscale images using Vector Quantization (LBG Algorithm).
 Vector Quantization (VQ) is a lossy image compression technique that reduces the size of an image by replacing groups of pixels (called blocks or vectors) with representative patterns known as codewords.
 
